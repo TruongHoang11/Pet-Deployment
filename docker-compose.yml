@@ -1,0 +1,25 @@
+services:
+  # 1. Container cho Backend (Spring Boot)
+  backend:
+    build: ./Pet_18
+    container_name: backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/pet18?useSSL=false&serverTimezone=UTC
+      # Đảm bảo username và password của bạn cũng được cấu hình đúng
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=123456
+    volumes:
+      - ./Pet_18/uploads:/app/uploads
+    restart: always
+
+  # 2. Container cho Frontend (React/Vite + Nginx)
+  frontend:
+    build: ./Petspa_frontend
+    container_name: frontend
+    ports:
+      - "80:80" # Truy cập web qua cổng 80 của máy tính (http://localhost)
+    depends_on:
+      - backend
+    restart: always
