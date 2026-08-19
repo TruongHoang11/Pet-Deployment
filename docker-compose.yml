@@ -8,10 +8,10 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/pet18?useSSL=false&serverTimezone=UTC
+      - MYSQL_URL=jdbc:mysql://host.docker.internal:3306/pet18?useSSL=false&serverTimezone=UTC
       # Đảm bảo username và password của bạn cũng được cấu hình đúng
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=123456
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=123456
     volumes:
       - ./Pet_18/uploads:/app/uploads
     extra_hosts:
