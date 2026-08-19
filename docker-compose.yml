@@ -1,4 +1,53 @@
+# services:
+#   # 1. Container cho Backend (Spring Boot)
+#   backend:
+#     build:
+#       context: ./Pet_18
+#       dockerfile: Dockerfile
+#     container_name: backend
+#     ports:
+#       - "8080:8080"
+#     environment:
+#       # - MYSQL_URL=jdbc:mysql://host.docker.internal:3306/pet18?useSSL=false&serverTimezone=UTC
+#       - MYSQL_URL=jdbc:mysql://db:3306/pet18?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+#       # Đảm bảo username và password của bạn cũng được cấu hình đúng
+#       - MYSQL_USER=root
+#       - MYSQL_PASSWORD=123456
+#     volumes:
+#       - ./Pet_18/uploads:/app/uploads
+#     extra_hosts:
+#       - "host.docker.internal:host-gateway" # <---  dòng này  để Linux hiểu host.docker.internal
+#     restart: always
+
+#   # 2. Container cho Frontend (React/Vite + Nginx)
+#   frontend:
+#     build:
+#       context: ./Petspa_frontend
+#       dockerfile: Dockerfile
+#     container_name: frontend
+#     ports:
+#       - "80:80" # Truy cập web qua cổng 80 của máy tính (http://localhost)
+#     depends_on:
+#       - backend
+#     restart: always
+
+
+version: '3.8'
+
 services:
+  # 0. Container cho MySQL Database (Đã kích hoạt lại)
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: pet18
+      MYSQL_ROOT_PASSWORD: 123456
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
   # 1. Container cho Backend (Spring Boot)
   backend:
     build:
@@ -8,14 +57,13 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - MYSQL_URL=jdbc:mysql://host.docker.internal:3306/pet18?useSSL=false&serverTimezone=UTC
-      # Đảm bảo username và password của bạn cũng được cấu hình đúng
+      - MYSQL_URL=jdbc:mysql://db:3306/pet18?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       - MYSQL_USER=root
       - MYSQL_PASSWORD=123456
     volumes:
       - ./Pet_18/uploads:/app/uploads
-    extra_hosts:
-      - "host.docker.internal:host-gateway" # <---  dòng này  để Linux hiểu host.docker.internal
+    depends_on:
+      - db   # Bắt buộc phải có để backend đợi database chạy xong rồi mới khởi động
     restart: always
 
   # 2. Container cho Frontend (React/Vite + Nginx)
@@ -25,7 +73,10 @@ services:
       dockerfile: Dockerfile
     container_name: frontend
     ports:
-      - "80:80" # Truy cập web qua cổng 80 của máy tính (http://localhost)
+      - "80:80"
     depends_on:
       - backend
     restart: always
+
+volumes:
+  mysql_data:
