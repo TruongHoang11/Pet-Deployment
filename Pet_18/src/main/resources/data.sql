@@ -1,0 +1,524 @@
+-- /*-- data.sql: seed core domain data after initial users/roles are created.
+-- -- Dynamic user id selection based on the first registered USER account.
+-- SET @FIRST_USER_ID = (SELECT id FROM tbl_users WHERE email = 'user@gmail.com' ORDER BY created_date LIMIT 1);
+--
+-- INSERT IGNORE INTO tbl_categories (name, category_type, delete_flag, active_flag, created_date, last_modified_date, created_by, last_modified_by)
+-- VALUES
+--   ('Thức ăn chó cảnh', 'PRODUCT', 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Thức ăn mèo cảnh', 'PRODUCT', 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Đồ chơi thú cưng', 'PRODUCT', 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Phụ kiện chăm sóc', 'PRODUCT', 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Chăm sóc lông', 'SERVICE', 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Tắm rửa', 'SERVICE', 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Cắt tỉa lông', 'SERVICE', 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Vệ sinh tai', 'SERVICE', 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Vệ sinh răng miệng', 'SERVICE', 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Spa toàn diện', 'SERVICE', 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL);
+--
+-- INSERT IGNORE INTO tbl_products (name, description, price, category_id, delete_flag, active_flag, created_date, last_modified_date, created_by, last_modified_by, avg_rating, total_reviews)
+-- VALUES
+--   ('Royal Canin Puppy', 'Thức ăn dành cho chó con giúp phát triển xương chắc khỏe.', 620000.00, 1, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL, 0.0, 0),
+--   ('Pedigree Adult', 'Thức ăn dinh dưỡng dành cho chó trưởng thành.', 450000.00, 1, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL, 0.0, 0),
+--   ('Whiskas Salmon', 'Thức ăn hạt mèo vị cá hồi thơm ngon.', 290000.00, 2, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL, 0.0, 0),
+--   ('Cat Chow Indoor', 'Thức ăn cho mèo sống trong nhà, giàu chất xơ.', 340000.00, 2, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL, 0.0, 0),
+--   ('Bóng gặm chó', 'Đồ chơi giúp rèn luyện răng và trí thông minh cho chó.', 120000.00, 3, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL, 0.0, 0),
+--   ('Cần câu mèo', 'Đồ chơi vũ trụ với lông gà kích thích mèo vận động.', 85000.00, 3, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL, 0.0, 0),
+--   ('Bàn chải lông', 'Phụ kiện chải lông giúp giảm rụng lông.', 95000.00, 4, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL, 0.0, 0),
+--   ('Dầu gội thảo dược', 'Sản phẩm tắm gội cho thú cưng da nhạy cảm.', 140000.00, 4, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL, 0.0, 0),
+--   ('Gói Spa cắt lông cao cấp', 'Dịch vụ cắt tỉa lông kèm sấy khô chuyên nghiệp.', 420000.00, 7, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL, 0.0, 0),
+--   ('Gói Tắm trắng da', 'Dịch vụ tắm trắng, khử mùi, làm mềm da.', 320000.00, 6, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL, 0.0, 0),
+--   ('Gói Chăm sóc răng miệng', 'Vệ sinh, đánh bóng răng cho thú cưng.', 280000.00, 9, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL, 0.0, 0),
+--   ('Gói Tắm hấp dưỡng chất', 'Dịch vụ tắm xông dưỡng chất cho lông bóng mượt.', 380000.00, 10, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL, 0.0, 0);
+--
+-- INSERT IGNORE INTO tbl_inventories (quantity, product_id, created_date, last_modified_date, created_by, last_modified_by)
+-- VALUES
+--   (60, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (70, 2, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (50, 3, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (40, 4, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (80, 5, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (35, 6, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (90, 7, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (120, 8, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (25, 9, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (30, 10, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (20, 11, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (15, 12, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL);
+--
+-- INSERT IGNORE INTO tbl_inventories_transactions (quantity, type, note, inventory_id, created_date, last_modified_date, created_by, last_modified_by)
+-- VALUES
+--   (20, 'IMPORT', 'Nhập kho ban đầu', 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (15, 'IMPORT', 'Nhập kho ban đầu', 2, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (10, 'IMPORT', 'Nhập kho ban đầu', 3, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (8, 'IMPORT', 'Nhập kho ban đầu', 4, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (30, 'IMPORT', 'Nhập kho ban đầu', 5, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (12, 'IMPORT', 'Nhập kho ban đầu', 6, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (25, 'IMPORT', 'Nhập kho ban đầu', 7, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (40, 'IMPORT', 'Nhập kho ban đầu', 8, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (10, 'IMPORT', 'Nhập kho ban đầu', 9, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (15, 'IMPORT', 'Nhập kho ban đầu', 10, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (5, 'IMPORT', 'Nhập kho ban đầu', 11, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (5, 'IMPORT', 'Nhập kho ban đầu', 12, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL);
+--
+-- INSERT IGNORE INTO tbl_product_images (image_url, is_main, product_id, created_date, last_modified_date)
+-- VALUES
+--   ('https://example.com/images/dog-food-1.jpg', 1, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/dog-food-2.jpg', 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/dog-food-3.jpg', 1, 2, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/dog-food-4.jpg', 0, 2, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/cat-food-1.jpg', 1, 3, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/cat-food-2.jpg', 0, 3, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/cat-food-3.jpg', 1, 4, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/cat-food-4.jpg', 0, 4, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/toy-1.jpg', 1, 5, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/toy-2.jpg', 0, 5, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/toy-3.jpg', 1, 6, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/toy-4.jpg', 0, 6, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/brush-1.jpg', 1, 7, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/shampoo-1.jpg', 1, 8, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/spa-1.jpg', 1, 9, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/spa-2.jpg', 0, 9, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/bath-1.jpg', 1, 10, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/bath-2.jpg', 0, 10, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/dental-1.jpg', 1, 11, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/conditioning-1.jpg', 1, 12, '2026-06-12 00:00:00', '2026-06-12 00:00:00');
+--
+-- INSERT IGNORE INTO tbl_services (name, description, base_price, duration_min, category_id, delete_flag, active_flag, created_date, last_modified_date, created_by, last_modified_by)
+-- VALUES
+--   ('Gói tắm dưỡng ấm', 'Tắm kết hợp sấy và massage dễ chịu cho thú cưng.', 320000.00, 40, 6, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Cắt tỉa tạo kiểu', 'Cắt tỉa lông chuyên sâu theo yêu cầu khách hàng.', 520000.00, 90, 7, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Vệ sinh tai chuyên nghiệp', 'Làm sạch tai, loại bỏ ráy và khử khuẩn.', 180000.00, 25, 8, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Chăm sóc răng miệng', 'Vệ sinh răng, làm sạch mảng bám cho thú cưng.', 280000.00, 35, 9, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Spa dưỡng chất', 'Liệu trình spa chuyên sâu để da lông mềm mượt.', 420000.00, 60, 10, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Tắm khử mùi', 'Tắm loại bỏ mùi khó chịu và phục hồi lông.', 260000.00, 35, 6, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Cắt móng', 'Dịch vụ cắt móng an toàn, nhẹ nhàng.', 90000.00, 15, 6, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Chải lông tẩy lông', 'Chải lông sâu và tẩy lông rụng.', 210000.00, 30, 7, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Gói chăm sóc da liễu', 'Kiểm tra da liễu và tư vấn sản phẩm phù hợp.', 360000.00, 45, 10, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Tắm dưỡng trắng', 'Tắm với dưỡng chất trắng sáng cho lông.', 340000.00, 10, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL);
+--
+-- INSERT IGNORE INTO tbl_pet_service_images (image_url, is_main, service_id, created_date, last_modified_date)
+-- VALUES
+--   ('https://example.com/images/service-1.jpg', 1, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-2.jpg', 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-3.jpg', 1, 2, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-4.jpg', 0, 2, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-5.jpg', 1, 3, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-6.jpg', 0, 3, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-7.jpg', 1, 4, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-8.jpg', 0, 4, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-9.jpg', 1, 5, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-10.jpg', 0, 5, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-11.jpg', 1, 6, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-12.jpg', 0, 6, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-13.jpg', 1, 7, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-14.jpg', 0, 7, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-15.jpg', 1, 8, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-16.jpg', 0, 8, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-17.jpg', 1, 9, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-18.jpg', 0, 9, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-19.jpg', 1, 10, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-20.jpg', 0, 10, '2026-06-12 00:00:00', '2026-06-12 00:00:00');
+--
+-- INSERT IGNORE INTO tbl_pets (name, specie, gender, birthday, weight, health_status, user_id, delete_flag, active_flag, created_date, last_modified_date, created_by, last_modified_by)
+-- VALUES
+--   ('Bông', 'Chó Poodle', 'FEMALE', '2023-01-20', 3.2, 'Lông dài, sức khỏe tốt', @FIRST_USER_ID, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Cún', 'Chó Shih Tzu', 'MALE', '2022-07-10', 4.1, 'Da nhạy cảm, cần dầu gội dịu nhẹ', @FIRST_USER_ID, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Miu', 'Mèo Anh lông ngắn', 'FEMALE', '2024-03-05', 2.8, 'Ăn tốt, không bị nôn', @FIRST_USER_ID, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Tom', 'Mèo Ta', 'MALE', '2024-02-14', 3.1, 'Hơi thừa cân, cần chăm sóc lông', @FIRST_USER_ID, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Luna', 'Chó Beagle', 'FEMALE', '2023-09-22', 5.2, 'Nhiệt tình, cần tắm thường xuyên', @FIRST_USER_ID, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Bé', 'Mèo Maine Coon', 'MALE', '2022-11-11', 6.7, 'Lông dày, cần chải kỹ', @FIRST_USER_ID, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Nâu', 'Chó Corgi', 'MALE', '2023-06-01', 9.0, 'Hoạt bát, cần vệ sinh móng', @FIRST_USER_ID, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Mít', 'Mèo Xiêm', 'FEMALE', '2024-04-28', 3.5, 'Dễ chịu, thích tắm ấm', @FIRST_USER_ID, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Bon', 'Chó Golden', 'MALE', '2023-05-19', 18.3, 'Lông dày, cần chải lông đều', @FIRST_USER_ID, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Tí', 'Mèo Scottish Fold', 'OTHER', '2024-01-15', 3.0, 'Lón khỏe, cần kiểm tra tai định kỳ', @FIRST_USER_ID, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL);
+--
+-- INSERT IGNORE INTO tbl_bookings (status, actual_price, booking_date, start_time, end_time, user_id, pet_id, delete_flag, active_flag, created_date, last_modified_date, created_by, last_modified_by)
+-- VALUES
+--   ('PENDING', 420000.00, '2026-06-20', '09:00:00', '10:30:00', @FIRST_USER_ID, 1, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('PROCESSING', 280000.00, '2026-06-21', '11:00:00', '11:45:00', @FIRST_USER_ID, 3, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('SHIPPED', 520000.00, '2026-06-22', '13:00:00', '14:30:00', @FIRST_USER_ID, 2, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('DELIVERED', 360000.00, '2026-06-23', '10:00:00', '11:00:00', @FIRST_USER_ID, 5, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('CANCELLED', 260000.00, '2026-06-24', '15:00:00', '15:35:00', @FIRST_USER_ID, 6, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('PENDING', 420000.00, '2026-06-25', '09:30:00', '11:00:00', @FIRST_USER_ID, 7, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('PROCESSING', 340000.00, '2026-06-26', '14:00:00', '15:10:00', @FIRST_USER_ID, 8, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('SHIPPED', 280000.00, '2026-06-27', '10:00:00', '10:40:00', @FIRST_USER_ID, 9, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('DELIVERED', 520000.00, '2026-06-28', '12:00:00', '13:30:00', @FIRST_USER_ID, 10, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('PENDING', 420000.00, '2026-06-29', '08:30:00', '10:00:00', @FIRST_USER_ID, 1, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('DELIVERED', 380000.00, '2026-06-30', '10:00:00', '11:00:00', @FIRST_USER_ID, 2, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('SHIPPED', 260000.00, '2026-07-01', '11:30:00', '12:20:00', @FIRST_USER_ID, 4, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('PENDING', 520000.00, '2026-07-02', '14:00:00', '15:30:00', @FIRST_USER_ID, 6, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('PROCESSING', 340000.00, '2026-07-03', '09:40:00', '10:50:00', @FIRST_USER_ID, 8, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('DELIVERED', 420000.00, '2026-07-04', '13:00:00', '14:20:00', @FIRST_USER_ID, 10, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('PENDING', 300000.00, '2026-07-05', '09:00:00', '10:20:00', @FIRST_USER_ID, 1, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('SHIPPED', 460000.00, '2026-07-06', '12:00:00', '13:20:00', @FIRST_USER_ID, 3, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('DELIVERED', 390000.00, '2026-07-07', '15:00:00', '16:20:00', @FIRST_USER_ID, 5, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('PROCESSING', 520000.00, '2026-07-08', '10:00:00', '11:40:00', @FIRST_USER_ID, 7, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('PENDING', 360000.00, '2026-07-09', '14:00:00', '15:15:00', @FIRST_USER_ID, 9, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL);
+--
+-- INSERT IGNORE INTO tbl_booking_details (booking_id, service_id)
+-- VALUES
+--   (1, 1),
+--   (1, 2),
+--   (1, 3),
+--   (1, 4),
+--   (1, 5),
+--   (2, 1),
+--   (2, 2),
+--   (2, 3),
+--   (2, 4),
+--   (2, 6),
+--   (3, 1),
+--   (3, 2),
+--   (3, 3),
+--   (3, 5),
+--   (3, 6),
+--   (4, 1),
+--   (4, 2),
+--   (4, 4),
+--   (4, 5),
+--   (4, 7),
+--   (5, 2),
+--   (5, 3),
+--   (5, 4),
+--   (5, 6),
+--   (5, 8),
+--   (6, 1),
+--   (6, 3),
+--   (6, 5),
+--   (6, 7),
+--   (6, 9),
+--   (7, 2),
+--   (7, 4),
+--   (7, 6),
+--   (7, 8),
+--   (7, 10),
+--   (8, 1),
+--   (8, 2),
+--   (8, 4),
+--   (8, 7),
+--   (8, 9),
+--   (9, 1),
+--   (9, 3),
+--   (9, 6),
+--   (9, 8),
+--   (9, 10),
+--   (10, 2),
+--   (10, 3),
+--   (10, 5),
+--   (10, 8),
+--   (10, 10),
+--   (11, 1),
+--   (11, 2),
+--   (11, 5),
+--   (11, 9),
+--   (11, 11),
+--   (12, 1),
+--   (12, 4),
+--   (12, 6),
+--   (12, 10),
+--   (12, 12),
+--   (13, 2),
+--   (13, 3),
+--   (13, 7),
+--   (13, 11),
+--   (13, 13),
+--   (14, 1),
+--   (14, 5),
+--   (14, 8),
+--   (14, 12),
+--   (14, 14),
+--   (15, 2),
+--   (15, 6),
+--   (15, 9),
+--   (15, 13),
+--   (15, 15),
+--   (16, 3),
+--   (16, 7),
+--   (16, 10),
+--   (16, 14),
+--   (16, 16),
+--   (17, 4),
+--   (17, 8),
+--   (17, 11),
+--   (17, 15),
+--   (17, 17),
+--   (18, 5),
+--   (18, 9),
+--   (18, 12),
+--   (18, 16),
+--   (18, 18),
+--   (19, 6),
+--   (19, 10),
+--   (19, 13),
+--   (19, 17),
+--   (19, 19),
+--   (20, 7),
+--   (20, 11),
+--   (20, 14),
+--   (20, 18),
+--   (20, 20);
+--
+-- INSERT IGNORE INTO tbl_shipping_addresses (full_name, phone, address_detail, ward, district, province, is_default, user_id, created_date, last_modified_date, created_by, last_modified_by)
+-- VALUES
+--   ('Nguyễn Văn A', '0912345678', '123 Đường A', 'Phường 1', 'Quận 1', 'Hồ Chí Minh', 1, @FIRST_USER_ID, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Trần Thị B', '0987654321', '456 Đường B', 'Phường 2', 'Quận 3', 'Hồ Chí Minh', 0, @FIRST_USER_ID, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Lê Văn C', '0909123456', '789 Đường C', 'Phường 5', 'Quận 5', 'Hồ Chí Minh', 0, @FIRST_USER_ID, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Phạm Thị D', '0911222333', '22 Đường D', 'Phường 7', 'Quận 7', 'Hồ Chí Minh', 0, @FIRST_USER_ID, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Hoàng Văn E', '0933445566', '33 Đường E', 'Phường 12', 'Quận Tân Bình', 'Hồ Chí Minh', 0, @FIRST_USER_ID, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Đỗ Thị F', '0966778899', '44 Đường F', 'Phường 15', 'Quận Gò Vấp', 'Hồ Chí Minh', 0, @FIRST_USER_ID, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Võ Văn G', '0913555777', '55 Đường G', 'Phường 9', 'Quận Phú Nhuận', 'Hồ Chí Minh', 0, @FIRST_USER_ID, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Bùi Thị H', '0944887766', '66 Đường H', 'Phường 3', 'Quận 4', 'Hồ Chí Minh', 0, @FIRST_USER_ID, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Ngô Văn I', '0900555777', '77 Đường I', 'Phường 11', 'Quận Bình Thạnh', 'Hồ Chí Minh', 0, @FIRST_USER_ID, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Trịnh Thị K', '0988776655', '88 Đường K', 'Phường 10', 'Quận 10', 'Hồ Chí Minh', 0, @FIRST_USER_ID, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL);
+--
+-- INSERT IGNORE INTO tbl_carts (user_id, created_date, last_modified_date)
+-- VALUES
+--   (@FIRST_USER_ID, '2026-06-12 00:00:00', '2026-06-12 00:00:00');
+--
+-- INSERT IGNORE INTO tbl_cart_items (product_id, cart_id, quantity, created_date, last_modified_date)
+-- VALUES
+--   (1, 1, 2, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (3, 1, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (5, 1, 3, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (7, 1, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (8, 1, 2, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (2, 1, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (4, 1, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (6, 1, 2, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (9, 1, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (10, 1, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00');
+--
+-- INSERT IGNORE INTO tbl_payments (payment_method, transaction_id, amount, status, created_date, last_modified_date, created_by, last_modified_by)
+-- VALUES
+--   ('VNPAY', 'VN202606120001', 450000.00, 'SUCCESS', '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('CASH', 'CASH202606120002', 280000.00, 'PENDING', '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('VNPAY', 'VN202606120003', 520000.00, 'SUCCESS', '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('CASH', 'CASH202606120004', 360000.00, 'FAILED', '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('VNPAY', 'VN202606120005', 260000.00, 'SUCCESS', '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('CASH', 'CASH202606120006', 420000.00, 'PENDING', '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('VNPAY', 'VN202606120007', 340000.00, 'PROCESSING', '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('CASH', 'CASH202606120008', 280000.00, 'SUCCESS', '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('VNPAY', 'VN202606120009', 520000.00, 'PENDING', '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('CASH', 'CASH202606120010', 420000.00, 'SUCCESS', '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL);
+--
+-- INSERT IGNORE INTO tbl_orders (shipping_name, shipping_phone, shipping_address_full, total_amount, status, payment_id, user_id, delete_flag, active_flag, created_date, last_modified_date, created_by, last_modified_by)
+-- VALUES
+--   ('Nguyễn Văn A', '0912345678', '123 Đường A, Phường 1, Quận 1, Hồ Chí Minh', 450000.00, 'PENDING', 1, @FIRST_USER_ID, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Trần Thị B', '0987654321', '456 Đường B, Phường 2, Quận 3, Hồ Chí Minh', 280000.00, 'PROCESSING', 2, @FIRST_USER_ID, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Lê Văn C', '0909123456', '789 Đường C, Phường 5, Quận 5, Hồ Chí Minh', 520000.00, 'SHIPPED', 3, @FIRST_USER_ID, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Phạm Thị D', '0911222333', '22 Đường D, Phường 7, Quận 7, Hồ Chí Minh', 360000.00, 'DELIVERED', 4, @FIRST_USER_ID, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Hoàng Văn E', '0933445566', '33 Đường E, Phường 12, Quận Tân Bình, Hồ Chí Minh', 260000.00, 'CANCELLED', 5, @FIRST_USER_ID, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Đỗ Thị F', '0966778899', '44 Đường F, Phường 15, Quận Gò Vấp, Hồ Chí Minh', 420000.00, 'PENDING', 6, @FIRST_USER_ID, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Võ Văn G', '0913555777', '55 Đường G, Phường 9, Quận Phú Nhuận, Hồ Chí Minh', 340000.00, 'PROCESSING', 7, @FIRST_USER_ID, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Bùi Thị H', '0944887766', '66 Đường H, Phường 3, Quận 4, Hồ Chí Minh', 280000.00, 'SHIPPED', 8, @FIRST_USER_ID, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Ngô Văn I', '0900555777', '77 Đường I, Phường 11, Quận Bình Thạnh, Hồ Chí Minh', 520000.00, 'PENDING', 9, @FIRST_USER_ID, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Trịnh Thị K', '0988776655', '88 Đường K, Phường 10, Quận 10, Hồ Chí Minh', 420000.00, 'SUCCESS', 10, @FIRST_USER_ID, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL);
+--
+-- INSERT IGNORE INTO tbl_order_details (quantity, unit_price, order_id, product_id, created_date, last_modified_date)
+-- VALUES
+--   (1, 450000.00, 1, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (2, 290000.00, 2, 3, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 520000.00, 3, 2, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 360000.00, 4, 4, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 260000.00, 5, 6, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 420000.00, 6, 9, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 340000.00, 7, 10, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 280000.00, 8, 11, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 520000.00, 9, 9, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 420000.00, 10, 10, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 95000.00, 1, 7, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 140000.00, 1, 8, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 120000.00, 2, 5, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 85000.00, 2, 6, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 620000.00, 3, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 450000.00, 3, 2, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 280000.00, 4, 11, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 380000.00, 4, 12, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 120000.00, 5, 5, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 340000.00, 6, 4, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (2, 85000.00, 6, 6, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 95000.00, 7, 7, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 140000.00, 7, 8, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 180000.00, 7, 3, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 280000.00, 8, 11, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 620000.00, 9, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 450000.00, 9, 2, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 95000.00, 10, 7, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 85000.00, 1, 6, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 120000.00, 2, 5, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 450000.00, 2, 2, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 290000.00, 3, 3, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 260000.00, 4, 6, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 420000.00, 5, 9, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 340000.00, 6, 4, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 280000.00, 7, 11, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 120000.00, 8, 5, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 140000.00, 9, 8, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 620000.00, 10, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 420000.00, 10, 2, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 340000.00, 1, 4, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 90000.00, 2, 7, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 360000.00, 3, 4, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 340000.00, 4, 9, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 520000.00, 5, 2, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 280000.00, 6, 11, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 120000.00, 7, 5, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 140000.00, 8, 8, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 620000.00, 9, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   (1, 95000.00, 10, 7, '2026-06-12 00:00:00', '2026-06-12 00:00:00');
+--
+-- INSERT IGNORE INTO tbl_product_reviews (user_id, product_id, rating, comment, delete_flag, active_flag, created_date, last_modified_date, created_by, last_modified_by)
+-- VALUES
+--   (@FIRST_USER_ID, 1, 5, 'Sản phẩm chất lượng, chó nhà tôi rất thích.', 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 2, 4, 'Dinh dưỡng tốt, nhưng giá hơi cao.', 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 3, 5, 'Mèo ăn ngon nên rất hài lòng.', 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 4, 4, 'Hạt nhỏ phù hợp mèo nhà tôi.', 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 5, 5, 'Đồ chơi bền và an toàn.', 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 6, 3, 'Đồ chơi đẹp nhưng hơi nhỏ.', 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 7, 5, 'Bàn chải rất tốt, lông giảm rụng.', 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 8, 4, 'Dầu gội mùi dễ chịu.', 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 9, 5, 'Cắt lông rất đẹp.', 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 10, 4, 'Tắm dưỡng chất tốt cho lông.', 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL);
+--
+-- INSERT IGNORE INTO tbl_pet_service_reviews (user_id, rating, comment, service_id, delete_flag, active_flag, created_date, last_modified_date, created_by, last_modified_by)
+-- VALUES
+--   (@FIRST_USER_ID, 5, 'Dịch vụ tuyệt vời, thú cưng rất thư giãn.', 1, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 4, 'Cắt tỉa đẹp, nhân viên nhiệt tình.', 2, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 5, 'Vệ sinh tai sạch sẽ, không đau.', 3, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 4, 'Chăm sóc răng miệng rất cẩn thận.', 4, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 5, 'Spa dưỡng chất thật sự khác biệt.', 5, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 3, 'Tắm khử mùi tốt.', 6, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 4, 'Cắt móng nhanh, không làm đau.', 7, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 5, 'Chải lông tẩy lông rất sạch.', 8, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 4, 'Gói chăm sóc da liễu hữu ích.', 9, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 5, 'Tắm dưỡng trắng rất ưng ý.', 10, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL);
+--
+-- INSERT IGNORE INTO tbl_menus (name, path, icon, sort_order, parent_id, delete_flag, active_flag, created_date, last_modified_date, created_by, last_modified_by)
+-- VALUES
+--   ('Trang chủ', '/', 'home', 1, NULL, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Sản phẩm', '/products', 'store', 2, NULL, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Dịch vụ', '/services', 'spa', 3, NULL, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Đơn hàng', '/orders', 'order', 4, NULL, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Giỏ hàng', '/cart', 'cart', 5, NULL, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Hồ sơ', '/profile', 'user', 6, NULL, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Liên hệ', '/contact', 'contact', 7, NULL, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('FAQ', '/faq', 'help', 8, NULL, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Tin tức', '/news', 'news', 9, NULL, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Khuyến mãi', '/promotions', 'sale', 10, NULL, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL);
+--
+-- SET @ROLE_ADMIN_ID = (SELECT id FROM tbl_roles WHERE name = 'ROLE_ADMIN' LIMIT 1);
+-- SET @ROLE_USER_ID = (SELECT id FROM tbl_roles WHERE name = 'ROLE_USER' LIMIT 1);
+-- SET @ROLE_STAFF_ID = (SELECT id FROM tbl_roles WHERE name = 'ROLE_STAFF' LIMIT 1);
+--
+-- SET @MENU_HOME = (SELECT id FROM tbl_menus WHERE name = 'Trang chủ' LIMIT 1);
+-- SET @MENU_PRODUCTS = (SELECT id FROM tbl_menus WHERE name = 'Sản phẩm' LIMIT 1);
+-- SET @MENU_SERVICES = (SELECT id FROM tbl_menus WHERE name = 'Dịch vụ' LIMIT 1);
+-- SET @MENU_ORDERS = (SELECT id FROM tbl_menus WHERE name = 'Đơn hàng' LIMIT 1);
+-- SET @MENU_CART = (SELECT id FROM tbl_menus WHERE name = 'Giỏ hàng' LIMIT 1);
+-- SET @MENU_PROFILE = (SELECT id FROM tbl_menus WHERE name = 'Hồ sơ' LIMIT 1);
+-- SET @MENU_CONTACT = (SELECT id FROM tbl_menus WHERE name = 'Liên hệ' LIMIT 1);
+-- SET @MENU_FAQ = (SELECT id FROM tbl_menus WHERE name = 'FAQ' LIMIT 1);
+-- SET @MENU_NEWS = (SELECT id FROM tbl_menus WHERE name = 'Tin tức' LIMIT 1);
+-- SET @MENU_PROMOTIONS = (SELECT id FROM tbl_menus WHERE name = 'Khuyến mãi' LIMIT 1);
+--
+-- INSERT IGNORE INTO menu_roles (menu_id, role_id)
+-- VALUES
+--   (@MENU_HOME, @ROLE_ADMIN_ID),
+--   (@MENU_HOME, @ROLE_USER_ID),
+--   (@MENU_HOME, @ROLE_STAFF_ID),
+--   (@MENU_PRODUCTS, @ROLE_ADMIN_ID),
+--   (@MENU_PRODUCTS, @ROLE_USER_ID),
+--   (@MENU_SERVICES, @ROLE_ADMIN_ID),
+--   (@MENU_SERVICES, @ROLE_USER_ID),
+--   (@MENU_SERVICES, @ROLE_STAFF_ID),
+--   (@MENU_ORDERS, @ROLE_ADMIN_ID),
+--   (@MENU_ORDERS, @ROLE_USER_ID),
+--   (@MENU_ORDERS, @ROLE_STAFF_ID),
+--   (@MENU_CART, @ROLE_USER_ID),
+--   (@MENU_PROFILE, @ROLE_USER_ID),
+--   (@MENU_PROFILE, @ROLE_STAFF_ID),
+--   (@MENU_CONTACT, @ROLE_ADMIN_ID),
+--   (@MENU_CONTACT, @ROLE_USER_ID),
+--   (@MENU_CONTACT, @ROLE_STAFF_ID),
+--   (@MENU_FAQ, @ROLE_ADMIN_ID),
+--   (@MENU_FAQ, @ROLE_USER_ID),
+--   (@MENU_NEWS, @ROLE_ADMIN_ID),
+--   (@MENU_PROMOTIONS, @ROLE_ADMIN_ID);
+--
+-- INSERT IGNORE INTO tbl_services (name, description, base_price, duration_min, category_id, delete_flag, active_flag, created_date, last_modified_date, created_by, last_modified_by)
+-- VALUES
+--   ('Gói chăm sóc da mượt', 'Chăm sóc da và dưỡng lông bóng mượt, giảm rụng lông.', 380000.00, 55, 5, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Tắm tinh dầu thảo mộc', 'Tắm bằng tinh dầu thảo dược giúp da mềm và thơm lâu.', 360000.00, 45, 6, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Cắt tỉa lông nghệ thuật', 'Cắt tỉa lông tạo kiểu theo yêu cầu, phù hợp chó mèo.', 540000.00, 95, 7, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Rửa tai chống viêm', 'Làm sạch tai và sử dụng dung dịch khử khuẩn an toàn.', 190000.00, 30, 8, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Cạo lông vùng kẻ mắt', 'Vệ sinh và tạo form lông vùng mắt cho mèo.', 160000.00, 20, 8, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Đánh bóng răng + nước súc miệng', 'Làm sạch mảng bám, đánh bóng và hơi thở thơm tho.', 300000.00, 40, 9, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Spa toàn diện lông xoăn', 'Qua lại massage, xả, sấy cho lông xoăn mềm mượt.', 460000.00, 70, 10, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Tắm dưỡng máu', 'Tắm kết hợp dưỡng máu giúp lông bóng và da khỏe.', 390000.00, 50, 6, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Chăm sóc móng và bàn chân', 'Cắt móng, vệ sinh và massage bàn chân.', 120000.00, 25, 6, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   ('Chăm sóc lông chuyên sâu', 'Chải và bôi dưỡng lông cho thú cưng da nhạy cảm.', 450000.00, 60, 5, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL);
+--
+-- INSERT IGNORE INTO tbl_pet_service_images (image_url, is_main, service_id, created_date, last_modified_date)
+-- VALUES
+--   ('https://example.com/images/service-21.jpg', 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-22.jpg', 0, 2, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-23.jpg', 0, 3, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-24.jpg', 0, 4, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-25.jpg', 0, 5, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-26.jpg', 0, 6, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-27.jpg', 0, 7, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-28.jpg', 0, 8, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-29.jpg', 0, 9, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-30.jpg', 0, 10, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-31.jpg', 1, 11, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-32.jpg', 0, 11, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-33.jpg', 1, 12, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-34.jpg', 0, 13, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-35.jpg', 1, 14, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-36.jpg', 0, 15, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-37.jpg', 1, 16, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-38.jpg', 0, 17, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-39.jpg', 1, 18, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-40.jpg', 0, 19, '2026-06-12 00:00:00', '2026-06-12 00:00:00'),
+--   ('https://example.com/images/service-41.jpg', 1, 20, '2026-06-12 00:00:00', '2026-06-12 00:00:00');
+--
+-- INSERT IGNORE INTO tbl_pet_service_reviews (user_id, rating, comment, service_id, delete_flag, active_flag, created_date, last_modified_date, created_by, last_modified_by)
+-- VALUES
+--   (@FIRST_USER_ID, 5, 'Gói chăm sóc da mượt rất ưng, lông mềm mượt hơn hẳn.', 11, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 4, 'Tắm tinh dầu thơm, da không bị kích ứng.', 12, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 5, 'Cắt tỉa đẹp, giống như hình mẫu yêu cầu.', 13, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 4, 'Rửa tai sạch, không gây khó chịu cho thú cưng.', 14, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 5, 'Vệ sinh vùng mắt rất cẩn thận.', 15, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 4, 'Đánh bóng răng sạch, hơi thở thơm mát.', 16, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 5, 'Spa toàn diện lông xoăn rất tốt, lông mềm mượt.', 17, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 4, 'Tắm dưỡng máu giúp da sáng và mềm.', 18, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 5, 'Chăm sóc móng rất nhẹ nhàng, không sợ đau.', 19, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 4, 'Chăm sóc lông chuyên sâu rất phù hợp cho thú cưng da khô.', 20, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 5, 'Dịch vụ tốt, thú cưng ra về rất thoải mái.', 1, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 4, 'Cắt tỉa nhanh mà vẫn đẹp, sẽ quay lại.', 2, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 3, 'Vệ sinh tai ổn nhưng thời gian hơi lâu.', 3, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 5, 'Chăm sóc răng miệng sạch sẽ, nhân viên thân thiện.', 4, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL),
+--   (@FIRST_USER_ID, 4, 'Spa dưỡng chất khá tốt, lông sau khi về mềm hơn.', 5, 0, 1, '2026-06-12 00:00:00', '2026-06-12 00:00:00', NULL, NULL);
+--
+-- INSERT IGNORE INTO tbl_booking_details (booking_id, service_id)
+-- VALUES
+--   (1, 11),
+--   (1, 12),
+--   (2, 4),
+--   (2, 13),
+--   (3, 2),
+--   (3, 16),
+--   (4, 5),
+--   (4, 17),
+--   (5, 6),
+--   (5, 18),
+--   (6, 7),
+--   (6, 19),
+--   (7, 8),
+--   (7, 20),
+--   (8, 10),
+--   (9, 9),
+--   (10, 11),
+--   (10, 12),
+--   (9, 15),
+--   (8, 14);*/

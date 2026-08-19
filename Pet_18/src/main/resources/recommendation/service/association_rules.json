@@ -1,0 +1,552 @@
+[
+    {
+        "antecedent": [
+            1
+        ],
+        "consequent": [
+            2
+        ],
+        "confidence": 1.0,
+        "support": 0.04,
+        "lift": 12.5
+    },
+    {
+        "antecedent": [
+            26
+        ],
+        "consequent": [
+            25
+        ],
+        "confidence": 1.0,
+        "support": 0.04,
+        "lift": 12.5
+    },
+    {
+        "antecedent": [
+            2
+        ],
+        "consequent": [
+            1
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 12.5
+    },
+    {
+        "antecedent": [
+            25
+        ],
+        "consequent": [
+            26
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 12.5
+    },
+    {
+        "antecedent": [
+            2
+        ],
+        "consequent": [
+            3
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            3
+        ],
+        "consequent": [
+            2
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            3
+        ],
+        "consequent": [
+            4
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            4
+        ],
+        "consequent": [
+            3
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            4
+        ],
+        "consequent": [
+            5
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            5
+        ],
+        "consequent": [
+            4
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            5
+        ],
+        "consequent": [
+            6
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            6
+        ],
+        "consequent": [
+            5
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            6
+        ],
+        "consequent": [
+            7
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            7
+        ],
+        "consequent": [
+            6
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            8
+        ],
+        "consequent": [
+            7
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            7
+        ],
+        "consequent": [
+            8
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            8
+        ],
+        "consequent": [
+            9
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            9
+        ],
+        "consequent": [
+            8
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            9
+        ],
+        "consequent": [
+            10
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            10
+        ],
+        "consequent": [
+            9
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            10
+        ],
+        "consequent": [
+            11
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            11
+        ],
+        "consequent": [
+            10
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            11
+        ],
+        "consequent": [
+            12
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            12
+        ],
+        "consequent": [
+            11
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            12
+        ],
+        "consequent": [
+            13
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            13
+        ],
+        "consequent": [
+            12
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            13
+        ],
+        "consequent": [
+            14
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            14
+        ],
+        "consequent": [
+            13
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            14
+        ],
+        "consequent": [
+            15
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            15
+        ],
+        "consequent": [
+            14
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            16
+        ],
+        "consequent": [
+            15
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            15
+        ],
+        "consequent": [
+            16
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            16
+        ],
+        "consequent": [
+            17
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            17
+        ],
+        "consequent": [
+            16
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            17
+        ],
+        "consequent": [
+            18
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            18
+        ],
+        "consequent": [
+            17
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            18
+        ],
+        "consequent": [
+            19
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            19
+        ],
+        "consequent": [
+            18
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            19
+        ],
+        "consequent": [
+            20
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            20
+        ],
+        "consequent": [
+            19
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            20
+        ],
+        "consequent": [
+            21
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            21
+        ],
+        "consequent": [
+            20
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            21
+        ],
+        "consequent": [
+            22
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            22
+        ],
+        "consequent": [
+            21
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            22
+        ],
+        "consequent": [
+            23
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            23
+        ],
+        "consequent": [
+            22
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            24
+        ],
+        "consequent": [
+            23
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            23
+        ],
+        "consequent": [
+            24
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            24
+        ],
+        "consequent": [
+            25
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    },
+    {
+        "antecedent": [
+            25
+        ],
+        "consequent": [
+            24
+        ],
+        "confidence": 0.5,
+        "support": 0.04,
+        "lift": 6.25
+    }
+]

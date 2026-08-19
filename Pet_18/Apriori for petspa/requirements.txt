@@ -1,0 +1,4 @@
+pandas
+mlxtend
+PyYAML
+mysql-connector-python

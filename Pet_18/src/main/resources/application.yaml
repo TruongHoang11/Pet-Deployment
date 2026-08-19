@@ -1,0 +1,69 @@
+# Cấu hình Server
+server:
+  port: 8080
+
+spring:
+  application:
+    name: Pet
+
+  servlet:
+    multipart:
+      max-file-size: 4MB
+      max-request-size: 12MB
+
+  # Cấu hình phân trang (Pageable)
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
+
+  datasource:
+#     URL kết nối MySQL, mặc định database tên là pet18
+     url: ${MYSQL_URL:jdbc:mysql://localhost:3306/pet18?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
+     username: ${MYSQL_USER:root}
+     password: ${MYSQL_PASSWORD:123456}
+
+#    url: jdbc:mysql://localhost:3306/pet_dp?useUnicode=true&characterEncoding=UTF-8&characterSetResults=utf8mb4&serverTimezone=UTC&allowPublicKeyRetrieval=true
+#    username: root
+#    password: 123456
+
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    defer-datasource-initialization: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: false
+#  sql:
+#    init:
+#      mode: always
+#      data-locations: classpath:/data.sql
+#      continue-on-error: true
+#      encoding: UTF-8
+
+# Cấu hình mã hóa Token (JWT)
+jwt:
+  secret: ${JWT_SECRET:8qGqxtSyHo1jjFC8UkwX4fCr9jQbrTzlRJ28NgyXK4M}
+  access:
+    expiration_time: 3600000
+  refresh:
+    expiration_time: 864000000
+
+
+# Cấu hình đường dẫn lưu trữ file upload
+hoang:
+  upload-file:
+    # Dùng cho StaticResourcesWebConfiguration (Cần cấu hình file:/// để Spring hiểu)
+    resource-location: file:///app/uploads/
+    # Dùng cho FileServiceImpl (Đường dẫn thuần để Paths.get xử lý chính xác)
+    base-uri: /app/uploads
+
+vnpay:
+  tmn-code: R7MW0K0K
+  hash-secret: FZLQXWR945VMAT7EE0HP4TM1PIK4HSYT
+  url: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+  return-url:  http://localhost:5173/order-success
