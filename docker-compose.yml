@@ -14,6 +14,8 @@ services:
       - SPRING_DATASOURCE_PASSWORD=123456
     volumes:
       - ./Pet_18/uploads:/app/uploads
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # <---  dòng này  để Linux hiểu host.docker.internal
     restart: always
 
   # 2. Container cho Frontend (React/Vite + Nginx)
