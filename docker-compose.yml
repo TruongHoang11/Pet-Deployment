@@ -2,6 +2,7 @@ services:
   # 1. Container cho Backend (Spring Boot)
   backend:
     build: ./Pet_18
+    dockerfile: Dockerfile
     container_name: backend
     ports:
       - "8080:8080"
@@ -17,6 +18,7 @@ services:
   # 2. Container cho Frontend (React/Vite + Nginx)
   frontend:
     build: ./Petspa_frontend
+    dockerfile: Dockerfile
     container_name: frontend
     ports:
       - "80:80" # Truy cập web qua cổng 80 của máy tính (http://localhost)
