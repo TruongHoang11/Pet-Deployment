@@ -16,7 +16,7 @@ public class CorsConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         // cho phep nguon url nao
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:5173",
-                "http://localhost:91", "http://13.212.70.115"));
+                "http://localhost:91", "http://18.138.212.55"));
         // cho phep method nao
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         // Allowed methods
