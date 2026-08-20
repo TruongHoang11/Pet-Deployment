@@ -52,13 +52,7 @@ const addImages = async (
 
   const resp = await api.post(
     URL_CONSTANT.ProductImages.ADD_IMAGES,
-    formData,
-    {
-      headers: {
-        "Content-Type":
-          "multipart/form-data",
-      },
-    }
+    formData
   );
 
   return resp.data;

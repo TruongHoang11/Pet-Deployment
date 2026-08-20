@@ -67,6 +67,8 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
             cd /home/ubuntu/app          # Di chuyển vào thư mục chứa source code vừa copy lên
+            sudo mkdir -p Pet_18/uploads/avatars Pet_18/uploads/products
+            sudo chmod -R a+rwX Pet_18/uploads
             sudo docker compose down     # Tắt và xóa các container cũ đang chạy để dọn dẹp tài nguyên
             sudo docker compose build     # Build lại một cách nhẹ nhàng các thay đổi
             sudo docker compose up -d   # Chạy lại các container mới theo file docker-compose.yml

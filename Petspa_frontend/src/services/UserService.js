@@ -59,15 +59,15 @@ const getUserById = async (id) => {
 const createUser = async (userData) => {
   console.log("create user payload: ", userData);
   const payload = {
-  email: userData.email,
-  password: userData.password,
-  name: userData.name,
-  dateOfBirth: userData.dateOfBirth?.split("T")[0],
+    email: userData.email,
+    password: userData.password,
+    name: userData.name,
+    dateOfBirth: userData.dateOfBirth?.split("T")[0],
     gender: userData.gender,
-   role: {
-    id: Number(userData.role.id || userData.role)
-  }
-};
+    role: {
+      id: Number(userData.role.id || userData.role)
+    }
+  };
   const response = await api.post(
     URL_CONSTANT.User.CREATE_USER, payload);
   return response.data;
@@ -76,18 +76,18 @@ const createUser = async (userData) => {
 const updateUser = async (userData) => {
   console.log("update payload: ", userData);
   const payload = {
-  id: userData.id,
-  password: userData.password,
-  name: userData.name,
-  dateOfBirth: userData.dateOfBirth?.split("T")[0],
-  gender: userData.gender,
-  role: {
-    id: Number(userData.role.id || userData.role)
-  }
-};
-  
+    id: userData.id,
+    password: userData.password,
+    name: userData.name,
+    dateOfBirth: userData.dateOfBirth?.split("T")[0],
+    gender: userData.gender,
+    role: {
+      id: Number(userData.role.id || userData.role)
+    }
+  };
+
   const response = await api.put(
-    URL_CONSTANT.User.UPDATE_USER,payload
+    URL_CONSTANT.User.UPDATE_USER, payload
   );
 
   return response.data;
@@ -119,19 +119,14 @@ const uploadAvatar = async (userId, file) => {
 
   const res = await api.post(
     `/users/${userId}/avatar`,
-    formData,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data"
-      }
-    }
+    formData
   );
 
   return res.data;
 };
 
 // const getProfile = async () => {
-  
+
 //   const response = await api.get(
 //     URL_CONSTANT.User.GET_PROFILE
 //   );
