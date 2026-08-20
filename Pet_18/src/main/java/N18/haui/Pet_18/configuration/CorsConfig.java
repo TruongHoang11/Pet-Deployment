@@ -14,8 +14,9 @@ public class CorsConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        //cho phep nguon url nao
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000","http://localhost:5173","http://localhost:91"));
+        // cho phep nguon url nao
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:5173",
+                "http://localhost:91", "http://13.212.70.115"));
         // cho phep method nao
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         // Allowed methods
@@ -28,7 +29,7 @@ public class CorsConfig {
         // How long the response from a pre-flight request can be cached by clients
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         // Đăng ký cấu hình cho toàn bộ các path trong project
-        //Bạn chỉ cần cấu hình một lần duy nhất cho toàn bộ hệ thống
+        // Bạn chỉ cần cấu hình một lần duy nhất cho toàn bộ hệ thống
         // thay vì phải viết @CrossOrigin trên từng Controller.
         source.registerCorsConfiguration("/**", configuration);
         // Apply this configuration to all paths
