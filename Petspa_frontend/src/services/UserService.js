@@ -16,7 +16,7 @@ const getUsers = async (params = {}) => {
     { params }
   );
 
-  const baseUrl = `${import.meta.env.VITE_API_URL}/upload/avatars`;
+  const baseUrl = "/upload/avatars";
 
   const users = (response.data?.data?.result || []).map(user => ({
     ...user,
@@ -44,7 +44,7 @@ const getUserById = async (id) => {
   const mappedData = {
     ...data,
     avatarUrl: data?.avatarUrl
-      ? `${import.meta.env.VITE_API_URL}/upload/avatars/${data.avatarUrl}`
+      ? `/upload/avatars/${data.avatarUrl}`
       : "",
   };
 
@@ -145,7 +145,7 @@ const getProfile = async () => {
   const mappedData = {
     ...data,
     avatarUrl: data?.avatarUrl
-      ? `${import.meta.env.VITE_API_URL}/upload/avatars/${data.avatarUrl}`
+      ? `/upload/avatars/${data.avatarUrl}`
       : "",
   };
 
