@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.Map;
@@ -77,7 +78,10 @@ public class VNPayService {
 
         vnpParams.put("vnp_IpAddr", vnPayUtil.getCurrentIp(request));
 
-        LocalDateTime now = LocalDateTime.now();
+        // VNPay sandbox interprets CreateDate/ExpireDate in Vietnam time.
+        // Docker commonly runs in UTC, so relying on the container default
+        // makes a newly-created payment appear seven hours expired.
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"));
 
         DateTimeFormatter formatter =
                 DateTimeFormatter.ofPattern("yyyyMMddHHmmss");

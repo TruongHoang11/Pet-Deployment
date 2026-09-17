@@ -46,7 +46,11 @@ const CheckoutItemRow = ({ item }) => {
     let isMounted = true;
 
     const loadProductThumbnail = async () => {
-      if (item.productImage && item.productImage.startsWith("http")) {
+      if (
+        item.productImage &&
+        (item.productImage.startsWith("http") ||
+          item.productImage.startsWith("/"))
+      ) {
         if (isMounted) {
           setImgUrl(item.productImage);
           setLoadingImg(false);
@@ -57,11 +61,14 @@ const CheckoutItemRow = ({ item }) => {
       try {
         if (item.productId) {
           const res = await fetchImages(item.productId);
-          if (res?.data && isMounted) {
+          const images = Array.isArray(res) ? res : res?.data || [];
+          if (images.length > 0 && isMounted) {
             const mainImg =
-              res.data.find((img) => img.isThumbnail || img.isMain) ||
-              res.data[0];
+              images.find((img) => img.isThumbnail || img.isMain) ||
+              images[0];
             setImgUrl(mainImg?.imageUrl || fallbackImg);
+          } else if (isMounted) {
+            setImgUrl(fallbackImg);
           }
         } else {
           if (isMounted) setImgUrl(fallbackImg);

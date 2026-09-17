@@ -86,7 +86,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
         // Bỏ qua kiểm tra permission và trả về true.
         // Spring Security (đã cấu hình ở bước trước) sẽ quyết định
         // request này có được phép vào hay không (dựa trên permitAll hoặc authenticated).
-        if (id.isEmpty()) {
+        if (id.isEmpty() || "anonymousUser".equals(id)) {
             return true;
         }
 

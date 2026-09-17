@@ -30,6 +30,7 @@ public class PermissionInterceptorConfiguration implements WebMvcConfigurer {
                 // 2. Auth (Cổng vào)
                 prefix + UrlConstant.Auth.REGISTER,
                 prefix + UrlConstant.Auth.LOGIN,
+                prefix + "/menus/**",
                 prefix + UrlConstant.ForgetPassword.PREFIX + "/**", // Bỏ chặn toàn bộ luồng quên mật khẩu
 
                 // 3. Các API public cố định

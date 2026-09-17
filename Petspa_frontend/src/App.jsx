@@ -5,7 +5,6 @@ import Footer from "./components/layout/Footer";
 import ToastContainer from "./components/ui/ToastContainer";
 
 // Pages - Shop
-import HomePage from "./pages/home/HomePage";
 import ProductList from "./pages/shop/ProductList";
 import ProductDetail from "./pages/shop/ProductDetail";
 import Cart from "./pages/shop/Cart";
@@ -67,12 +66,20 @@ const AnonymousRoute = ({ children }) => {
 // ----------------------------------------------------------------------
 function App() {
   const sync = useAuthStore((state) => state.sync);
+  const logout = useAuthStore((state) => state.logout);
 
   useEffect(() => {
     if (typeof sync === "function") {
       sync();
     }
   }, [sync]);
+
+  useEffect(() => {
+    const handleUnauthorized = () => logout();
+    window.addEventListener("auth:unauthorized", handleUnauthorized);
+    return () =>
+      window.removeEventListener("auth:unauthorized", handleUnauthorized);
+  }, [logout]);
 
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
@@ -94,59 +101,31 @@ function App() {
           {/* ========================================================= */}
           <Route
             path="/"
-            element={
-              <RoleRoute allowedRoles={customerRoles}>
-                <HomePage />
-              </RoleRoute>
-            }
+            element={<Navigate to="/shop" replace />}
           />
           <Route
             path="/about"
-            element={
-              <RoleRoute allowedRoles={customerRoles}>
-                <AboutUs />
-              </RoleRoute>
-            }
+            element={<AboutUs />}
           />
           <Route
             path="/spa"
-            element={
-              <RoleRoute allowedRoles={customerRoles}>
-                <ServiceList />
-              </RoleRoute>
-            }
+            element={<ServiceList />}
           />
           <Route
             path="/spa/service/:id"
-            element={
-              <RoleRoute allowedRoles={customerRoles}>
-                <ServiceDetail />
-              </RoleRoute>
-            }
+            element={<ServiceDetail />}
           />
           <Route
             path="/shop"
-            element={
-              <RoleRoute allowedRoles={customerRoles}>
-                <ProductList />
-              </RoleRoute>
-            }
+            element={<ProductList />}
           />
           <Route
             path="/shop/product/:id"
-            element={
-              <RoleRoute allowedRoles={customerRoles}>
-                <ProductDetail />
-              </RoleRoute>
-            }
+            element={<ProductDetail />}
           />
           <Route
             path="/shop/cart"
-            element={
-              <RoleRoute allowedRoles={customerRoles}>
-                <Cart />
-              </RoleRoute>
-            }
+            element={<Cart />}
           />
 
           {/* AUTH ROUTES (Trang đăng nhập/đăng ký cho khách chưa login) */}

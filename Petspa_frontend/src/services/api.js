@@ -11,6 +11,29 @@ const api = axios.create({
   },
 });
 
+const PUBLIC_GET_PREFIXES = [
+  "/categories",
+  "/services",
+  "/menus",
+  "/products",
+  "/product-images",
+  "/product-reviews",
+  "/service-images",
+  "/service-reviews",
+];
+
+const isPublicRequest = (config = {}) => {
+  const method = (config.method || "get").toLowerCase();
+  const url = config.url || "";
+
+  return (
+    method === "get" &&
+    PUBLIC_GET_PREFIXES.some((prefix) =>
+      url === prefix || url.startsWith(`${prefix}/`)
+    )
+  );
+};
+
 // ─────────────────────────────────────────────
 // REQUEST INTERCEPTOR
 // Tự động gắn JWT vào header
@@ -25,7 +48,7 @@ api.interceptors.request.use(
       token
     );
 
-    if (token) {
+    if (token && !isPublicRequest(config)) {
       config.headers.Authorization =
         `Bearer ${token}`;
     }
@@ -43,7 +66,8 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (
-      error.response?.status === 401
+      error.response?.status === 401 &&
+      !isPublicRequest(error.config)
     ) {
       console.error(
         "Token hết hạn hoặc không hợp lệ"
@@ -58,7 +82,7 @@ api.interceptors.response.use(
       );
 
       // Nếu muốn tự động về login
-      window.location.href = "/login";
+      window.dispatchEvent(new Event("auth:unauthorized"));
     }
 
     return Promise.reject(error);

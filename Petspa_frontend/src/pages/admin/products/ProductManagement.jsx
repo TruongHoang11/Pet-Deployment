@@ -20,6 +20,44 @@ import Pagination from "../../../components/common/Pagination";
 import { useCartStore } from "../../../store/cartStore";
 import { useProductStore } from "../../../store/productStore";
 import { useCategoryStore } from "../../../store/categoryStore";
+import { useProductImageStore } from "../../../store/productImageStore";
+
+const ProductThumbnail = ({ product }) => {
+  const fetchImages = useProductImageStore((state) => state.fetchImages);
+  const images = useProductImageStore(
+    (state) => state.imagesByProductId[product.id] || [],
+  );
+
+  useEffect(() => {
+    if (product?.id) {
+      fetchImages(product.id).catch(() => {});
+    }
+  }, [product?.id, fetchImages]);
+
+  const thumbnail =
+    images.find((image) => image?.isThumbnail || image?.isMain) || images[0];
+  const imageUrl =
+    product.thumbnailUrl ||
+    thumbnail?.imageUrl ||
+    thumbnail?.url ||
+    thumbnail?.image_url;
+
+  if (!imageUrl) {
+    return <Package size={20} className="text-gray-400" />;
+  }
+
+  return (
+    <img
+      src={imageUrl}
+      alt={product.name}
+      className="w-full h-full object-cover"
+      onError={(event) => {
+        event.currentTarget.onerror = null;
+        event.currentTarget.src = "https://placehold.co/150x150?text=No+Image";
+      }}
+    />
+  );
+};
 
 const ProductManagement = () => {
   // ── Store: Products & Pagination ──
@@ -358,20 +396,7 @@ const ProductManagement = () => {
                   >
                     <td className="p-4 text-center">
                       <div className="w-14 h-14 bg-gray-100 rounded-xl overflow-hidden border border-gray-200 flex items-center justify-center mx-auto group-hover:scale-105 transition-transform duration-200 shadow-sm">
-                        {product.thumbnailUrl ? (
-                          <img
-                            src={product.thumbnailUrl}
-                            alt={product.name}
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              e.target.onerror = null;
-                              e.target.src =
-                                "https://placehold.co/150x150?text=No+Image";
-                            }}
-                          />
-                        ) : (
-                          <Package size={20} className="text-gray-400" />
-                        )}
+                        <ProductThumbnail product={product} />
                       </div>
                     </td>
                     <td className="p-4">

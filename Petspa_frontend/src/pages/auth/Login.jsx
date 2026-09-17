@@ -1,23 +1,39 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { Eye, EyeOff, Lock, Mail, ArrowRight } from "lucide-react";
 
 import { Button } from "../../components/common/Button";
 import {Input} from "../../components/common/Input";
 import { useAuthStore } from "../../store/authStore";
+import { useCartStore } from "../../store/cartStore";
 
 // ✅ SỬA TẠI ĐÂY: Import toàn bộ object chứa các hàm validate
 import authValidator from "../../utils/authValidator";
 // ✅ SỬA TẠI ĐÂY: Trích xuất hàm cụ thể ra khỏi object để gọi trực tiếp ở dưới
 const { validateLoginForm } = authValidator;
 
+const demoAccounts = [
+  {
+    role: "Quản trị viên",
+    email: "admin@gmail.com",
+    password: "admin@123",
+  },
+  {
+    role: "Người dùng",
+    email: "user@gmail.com",
+    password: "user@123",
+  },
+];
+
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Giải pháp an toàn gánh mọi cấu trúc Store: Tự động bắt cả loginAction, login hoặc actions.loginAction
   const loginAction = useAuthStore((state) => state.loginAction || state.login || state.actions?.loginAction);
   const loading = useAuthStore((state) => state.loading);
   const authError = useAuthStore((state) => state.error);
+  const syncGuestCart = useCartStore((state) => state.syncGuestCart);
 
   // UI State nội bộ của form
   const [formData, setFormData] = useState({
@@ -32,6 +48,11 @@ const Login = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (validationError) setValidationError("");
+  };
+
+  const selectDemoAccount = ({ email, password }) => {
+    setFormData({ email, password });
+    setValidationError("");
   };
 
   // Thực hiện xử lý submit form
@@ -63,7 +84,8 @@ const Login = () => {
       if (["ROLE_ADMIN", "ROLE_STAFF"].includes(result.role)) {
         navigate("/admin/dashboard", { replace: true });
       } else {
-        navigate("/", { replace: true });
+        await syncGuestCart();
+        navigate(location.state?.from?.pathname || "/", { replace: true });
       }
     }
   };
@@ -89,6 +111,40 @@ const Login = () => {
               {validationError || authError}
             </div>
           )}
+
+          {/* DEMO ACCOUNTS */}
+          <div className="mb-6 rounded-2xl border border-blue-100 bg-blue-50/70 p-4">
+            <div className="mb-3">
+              <p className="text-xs font-black uppercase tracking-wider text-pet-blue">
+                Tài khoản dùng thử
+              </p>
+              <p className="mt-1 text-xs text-slate-500">
+                Nhấn vào một tài khoản để tự động điền thông tin đăng nhập.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {demoAccounts.map((account) => (
+                <button
+                  key={account.email}
+                  type="button"
+                  onClick={() => selectDemoAccount(account)}
+                  disabled={loading}
+                  className="rounded-xl border border-blue-100 bg-white p-3 text-left transition hover:border-pet-blue hover:shadow-sm disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  <span className="block text-xs font-black text-slate-800">
+                    {account.role}
+                  </span>
+                  <span className="mt-1 block text-[11px] font-semibold text-slate-600">
+                    {account.email}
+                  </span>
+                  <span className="block text-[11px] text-slate-500">
+                    Mật khẩu: {account.password}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
 
           {/* LOGIN FORM */}
           <form onSubmit={handleSubmit} className="space-y-5">
